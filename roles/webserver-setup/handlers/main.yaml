@@ -1,0 +1,7 @@
+- name: Restart firewalld
+  command: /usr/sbin/service firewalld restart
+
+- name: Upload Content
+  copy:
+    src: index.html
+    dest: /usr/share/nginx/html/webs/index.html

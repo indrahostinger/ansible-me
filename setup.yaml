@@ -1,0 +1,9 @@
+---
+- name: Setup vps
+  hosts: vps
+
+  roles:
+    - system-init
+    - ssh-setup
+    - webserver-setup
+    - mysql-setup

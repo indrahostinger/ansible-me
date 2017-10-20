@@ -1,0 +1,22 @@
+- name: upgrade all packages
+  yum: 
+    name: '*' 
+    state: latest
+
+- name: set timezone to Asia/Jakarta
+  timezone: 
+    name: Asia/Jakarta
+
+- name: change hostname server
+  hostname:
+    name: "vps-indra"
+
+- name: disable selinux
+  selinux:
+    state: disabled
+  notify:
+    - Restart server
+
+- name: Wait for the server to finish rebooting
+  sudo: no
+  local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=65002 timeout=900

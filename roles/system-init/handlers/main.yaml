@@ -1,0 +1,5 @@
+- name: Restart server
+  command: /usr/sbin/reboot
+  async: 0
+  poll: 0
+  ignore_errors: true

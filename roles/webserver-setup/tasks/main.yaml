@@ -1,0 +1,35 @@
+- name: Enable epel-repo
+  yum:
+    name: epel-release
+
+- name: Install nginx
+  yum: 
+    name: nginx
+    state: latest
+  notify:
+    - Start nginx
+
+- name: Start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Open port 80 on firewalld
+  firewalld:
+    port: 80/tcp
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld
+
+- name: Create webs dir
+  file:
+    path: /usr/share/nginx/html/webs
+    state: directory
+    mode: 0755
+
+- name: Upload Content
+  copy:
+    src: index.html
+    dest: /usr/share/nginx/html/webs/index.html

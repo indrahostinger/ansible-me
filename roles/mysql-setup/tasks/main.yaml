@@ -1,0 +1,29 @@
+- name: load mariadb root password
+  include_vars: vaults_mariadb.yaml
+
+- name: Install mariadb server
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - mariadb-server
+    - mariadb
+    - MySQL-python
+
+- name: Make sure mariadb start
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: update mariadb root password
+  mysql_user:
+    name: root
+    host: localhost
+    password: "{{ mysql_root_db_pass }}"
+
+- ini_file:
+    path: /root/.my.cnf
+    section: client
+    option: password
+    value: '{{ mysql_root_db_pass }}'
+    mode: 0600
